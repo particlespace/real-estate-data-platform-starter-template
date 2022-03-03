@@ -21,9 +21,9 @@
     "zustand": "^3.7.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-dotenv && react-scripts start",
+    "build": "react-dotenv && react-scripts build",
+    "test":  "react-dotenv && react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
