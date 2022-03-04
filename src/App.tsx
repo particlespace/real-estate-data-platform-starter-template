@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { Nav, Navbar } from 'react-bootstrap';
+import Home from './pages/Home';
 
 function App() {
   return (
@@ -14,8 +15,10 @@ function App() {
           </Navbar.Brand>
         </Navbar>
         <Row>
-          {Math.random() > 0.5 ? (
-            <p>Home</p>
+          {true ? (
+            <Container>
+              <Home />
+            </Container>
           ) : (
             <Col
               className="mx-auto"
