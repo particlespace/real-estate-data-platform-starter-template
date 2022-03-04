@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { Nav, Navbar } from 'react-bootstrap';
 import Home from './pages/Home';
+import logo from './logo_upscaled_198_138.png';
 
 function App() {
   return (
@@ -11,6 +12,11 @@ function App() {
       <Container>
         <Navbar>
           <Navbar.Brand href="/" className="me-auto">
+            <img
+              style={{ height: '30px' }}
+              alt="logo"
+              src={logo}
+            />
             Particle Space Real Estate Data Platform Starter
           </Navbar.Brand>
         </Navbar>
