@@ -1,5 +1,5 @@
 import GoogleMapReact from 'google-map-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import env from 'react-dotenv';
 
 /**
@@ -10,7 +10,6 @@ const logObject = (obj: Record<string, any>) => {
     if (typeof obj[key] === 'object') {
       logObject(obj[key]);
     } else {
-      console.log(`${key}: ${obj[key]}`);
     }
   });
 }
@@ -73,9 +72,6 @@ export default function Map({
   setSelectedPlace,
   boundariesState,
 }: MapProps) {
-  const [map, setMap] = useState<any>(null);
-  const [maps, setMaps] = useState<any>(null);
-
   const [geocoder, setGeocoder] = useState<any>(null);
 
   const [center, setCenter] = useState<any>({
@@ -89,6 +85,8 @@ export default function Map({
 
   const [point, setPoint] = useState<any>(null);
 
+  const poly = useRef<any>(null);
+
   const selectedLocation = useMemo(() => {
     return {
       lat: selectedPlace?.geometry?.location.lat() || null,
@@ -99,51 +97,31 @@ export default function Map({
   useEffect(() => {
     if (boundariesState !== null && boundariesState !== boundaries) {
       setBoundaries(boundariesState);
-      console.log(boundariesState);
     }
   }, [boundariesState, boundaries]);
 
   useEffect(() => {
-    console.log('baoundary change');
-    console.log(!!map);
-    console.log(!!maps);
-    console.log(boundaries);
-    if (
-      !!map
-      && !!maps
-      && boundaries
-      && boundaries.data
-    ) {
-      console.log('boundaries', boundaries);
+    if (boundaries && boundaries.data) {
       const boundaryData = boundaries.data.boundaries;
       const type = boundaryData?.type;
+      const coordinates = boundaryData?.coordinates;
       if (type === 'Polygon') {
-        console.log('polygon');
-        const poly = new maps.Polygon({
-          paths: [
-            { lat: 39.092306123688125, lng: -94.58670048764 },
-            { lat: 39.093306123688125, lng: -94.58670048764 },
-            { lat: 39.093306123688125, lng: -94.68670048764 },
-          ],
-          strokeColor: "#FF0000",
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: "#FF0000",
-          fillOpacity: 0.35
-        });
-        poly.setMap(map);
+        const newPaths = coordinates[0].map(
+              ([lng, lat]: [number, number]) => ({
+                lat,
+                lng,
+              })
+            )
+        poly.current?.setPath(newPaths);
       } else if (type === 'Point') {
-        console.log('point');
-        setPoint({
-          lat: boundaryData?.coordinates[1],
-          lng: boundaryData?.coordinates[0],
+        const [lng, lat] = coordinates;
+        (lat !== point?.lat || lng !== point?.lng) && setPoint({
+          lat,
+          lng,
         });
       }
     }
-  }, [map, maps, boundaries]);
-
-  console.log('point', point);
-  console.log('!!point', !!point);
+  }, [boundaries, point]);
 
   return (
     <div style={{ height: 'calc(100vh - 72px)', width: '100%' }}>
@@ -154,8 +132,15 @@ export default function Map({
         }}
         onGoogleApiLoaded={({ map, maps }) => {
           setGeocoder(new maps.Geocoder());
-          setMap(map);
-          setMaps(maps);
+          poly.current = new maps.Polygon({
+            paths: [],
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35
+          });
+          poly.current.setMap(map);
         }}
         yesIWantToUseGoogleMapApiInternals={true}
         defaultCenter={{ lat: -34.397, lng: 150.644 }}
@@ -172,8 +157,7 @@ export default function Map({
             setCenter(newCenter);
           }
         }}
-        onClick={({ event, x, y, lat, lng }) => {
-          console.log('click', event, x, y, lat, lng);
+        onClick={({ lat, lng }) => {
           geocoder && geocoder.geocode({ location: { lat, lng } }, (results: any, status: any) => {
             setSelectedPlace(results[0]);
             setCenter({
