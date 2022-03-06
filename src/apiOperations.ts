@@ -47,8 +47,37 @@ export function searchProperty(address: any): Promise<any> {
         state: address.state,
         zipcode: address.zip,
       })
-      console.log(params.toString());
     const url = new URL(`${apiURL}/property/search`)
+    url.search = params.toString();
+    return fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then(res => {
+        if (res.status === 200) {
+          res.json().then(data => {
+            resolve(data.data);
+          });
+        }
+      });
+  }));
+}
+
+/**
+ * Makes a post to
+ * https://api.particlespace.com/api/v1/property/validate/address
+ * with body:
+ * { address, city, state, zip }
+ */
+export function getBoundaries(address: any): Promise<any> {
+  return new Promise((resolve) => login().then((token) => {
+    const params =  new URLSearchParams({
+        search: `${address.streetAddress}, ${address.city}, ${address.state} ${address.zip}`,
+      })
+    const url = new URL(`${apiURL}/property/boundaries`)
     url.search = params.toString();
     return fetch(url.toString(), {
       method: 'GET',

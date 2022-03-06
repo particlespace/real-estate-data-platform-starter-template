@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import { useState, useMemo, useCallback } from 'react';
 import Map from '../components/Map';
 import Button from 'react-bootstrap/Button';
-import { verifyAddress, searchProperty } from '../apiOperations';
+import { verifyAddress, searchProperty, getBoundaries } from '../apiOperations';
 import { Card, Form, FormGroup, Offcanvas } from 'react-bootstrap';
 import '../code.css';
 
@@ -20,6 +20,12 @@ type searchState = {
   data: any;
 }
 
+type boundariesState = {
+  isLoading: boolean;
+  isError: boolean;
+  data: any;
+}
+
 export default function Home() {
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
 
@@ -30,6 +36,12 @@ export default function Home() {
   });
 
   const [searchState, setSearchState] = useState<searchState>({
+    isLoading: false,
+    isError: false,
+    data: null,
+  });
+
+  const [boundariesState, setBoundariesState] = useState<boundariesState>({
     isLoading: false,
     isError: false,
     data: null,
@@ -60,7 +72,6 @@ export default function Home() {
       isLoading: true,
     });
     verifyAddress(address).then(data => {
-      console.log(data);
       setVerifyState({
         ...verifyState,
         isLoading: false,
@@ -82,7 +93,6 @@ export default function Home() {
       isLoading: true,
     });
     searchProperty(address).then(data => {
-      console.log(data);
       setSearchState({
         ...searchState,
         isLoading: false,
@@ -98,11 +108,33 @@ export default function Home() {
     });
   }, [address, searchState]);
 
+  const handleGetBoundaries= useCallback(async () => {
+    setBoundariesState({
+      ...boundariesState,
+      isLoading: true,
+    });
+    getBoundaries(address).then(data => {
+      setBoundariesState({
+        ...boundariesState,
+        isLoading: false,
+        isError: false,
+        data,
+      });
+    }).catch(error => {
+      setBoundariesState({
+        isLoading: false,
+        isError: true,
+        data: error,
+      });
+    });
+  }, [address, boundariesState]);
+
   return (
     <Row>
       <Col>
         <Map
           selectedPlace={selectedPlace}
+          boundariesState={boundariesState}
           setSelectedPlace={(place: any) => {
             setSelectedPlace(place);
             setVerifyState({
@@ -129,7 +161,7 @@ export default function Home() {
             </Card.Title>
           </Card.Header>
           <Card.Body>
-            <Form.Group className="mb-2">
+            <Form.Group className="mb-2 d-flex flex-nowrap">
               <Button
                 className="mx-auto"
                 variant="primary"
@@ -143,6 +175,13 @@ export default function Home() {
                 onClick={handleSearchAddress}
               >
                 Search Property
+              </Button>
+              <Button
+                className="ms-3"
+                variant="primary"
+                onClick={handleGetBoundaries}
+              >
+                Get Boundaries
               </Button>
             </Form.Group>
             <Form.Group className="mb-2">
@@ -170,12 +209,29 @@ export default function Home() {
                 as="textarea"
                 className="code"
                 readOnly
-                //rows="auto"
-                style={{ height: 'calc(100vh - 216px - 16px)' }}
+                style={{ height: 'calc((100vh - 296px) / 2)' }}
                 value={
                   searchState.isLoading ? 'Loading...' :
                     searchState.isError ? 'Error' :
                       searchState.data !== null ? JSON.stringify(searchState.data, null, 2) :
+                        'No Data'
+                }
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>
+                Boundaries Result
+              </Form.Label>
+              <Form.Control
+                as="textarea"
+                className="code"
+                readOnly
+                //rows="auto"
+                style={{ height: 'calc((100vh - 296px) / 2)' }}
+                value={
+                  boundariesState.isLoading ? 'Loading...' :
+                    boundariesState.isError ? 'Error' :
+                      boundariesState.data !== null ? JSON.stringify(boundariesState.data, null, 2) :
                         'No Data'
                 }
               />
