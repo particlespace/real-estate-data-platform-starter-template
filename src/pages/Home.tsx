@@ -72,7 +72,6 @@ export default function Home() {
       isLoading: true,
     });
     verifyAddress(address).then(data => {
-      console.log(data);
       setVerifyState({
         ...verifyState,
         isLoading: false,
@@ -94,7 +93,6 @@ export default function Home() {
       isLoading: true,
     });
     searchProperty(address).then(data => {
-      console.log(data);
       setSearchState({
         ...searchState,
         isLoading: false,
@@ -116,7 +114,6 @@ export default function Home() {
       isLoading: true,
     });
     getBoundaries(address).then(data => {
-      console.log(data);
       setBoundariesState({
         ...boundariesState,
         isLoading: false,
@@ -132,7 +129,6 @@ export default function Home() {
     });
   }, [address, boundariesState]);
 
-  console.log('boundariesState', boundariesState);
   return (
     <Row>
       <Col>
