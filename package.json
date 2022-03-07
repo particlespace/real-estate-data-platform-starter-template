@@ -1,5 +1,7 @@
 {
   "name": "real-estate-data-platform-starter-template",
+  "description": "A simple starter template for a real estate data platform built on Particle Space",
+  "license": "MIT",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
