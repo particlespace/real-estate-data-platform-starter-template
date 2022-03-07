@@ -1,11 +1,10 @@
 import Col from 'react-bootstrap/Col';
-import Collapse from 'react-bootstrap/Collapse';
 import Row from 'react-bootstrap/Row';
 import { useState, useMemo, useCallback } from 'react';
 import Map from '../components/Map';
 import Button from 'react-bootstrap/Button';
 import { verifyAddress, searchProperty, getBoundaries } from '../apiOperations';
-import { Card, Form, FormGroup, Offcanvas } from 'react-bootstrap';
+import { Card, Form, Offcanvas } from 'react-bootstrap';
 import '../code.css';
 
 type verifyState = {

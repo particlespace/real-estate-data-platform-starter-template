@@ -1,19 +1,6 @@
 import GoogleMapReact from 'google-map-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import env from 'react-dotenv';
-
-/**
- * Recursively logs key value pairs of an object
- */
-const logObject = (obj: Record<string, any>) => {
-  Object.keys(obj).forEach((key) => {
-    if (typeof obj[key] === 'object') {
-      logObject(obj[key]);
-    } else {
-    }
-  });
-}
-
 type MarkerProps = {
   lat?: number;
   lng?: number;
