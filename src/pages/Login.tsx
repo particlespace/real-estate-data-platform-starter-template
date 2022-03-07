@@ -67,7 +67,13 @@ export default function Login({
                 onClick={() => setSigningUp(true)}
 
               >
-                <a href="">Sign Up</a>
+                <a
+                  href="https://dashboard.particlespace.com/auth/registration"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Sign Up
+                </a>
               </Form.Text>
             </Form>
           </Card.Body>
