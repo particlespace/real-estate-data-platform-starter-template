@@ -76,7 +76,6 @@ function App() {
                 <Card.Body>
                   This project requires a valid <code>.env</code> file to function.
                   Add your keys to the <code>.env</code> file in the root project and try again.
-                  See <a href="">here</a>
                 </Card.Body>
               </Card>
             </Col>
