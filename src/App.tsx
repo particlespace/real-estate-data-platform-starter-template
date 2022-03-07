@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { Nav, Navbar } from 'react-bootstrap';
 import Home from './pages/Home';
 import logo from './logo_upscaled_198_138.png';
+import githubIcon from './GitHub-Mark-64px.png';
 
 function App() {
   return (
@@ -18,6 +19,16 @@ function App() {
               src={logo}
             />
             Particle Space Real Estate Data Platform Starter
+          </Navbar.Brand>
+          <Navbar.Brand
+            href="https://github.com/particlespace/real-estate-data-platform-starter-template"
+            target="_blank"
+          >
+            <img
+              src={githubIcon}
+              alt="github"
+              style={{ height: '32px' }}
+            />
           </Navbar.Brand>
         </Navbar>
         <Row>
