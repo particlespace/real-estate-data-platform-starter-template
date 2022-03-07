@@ -24,4 +24,4 @@ yarn-error.log*
 
 .env
 public/env.js
-.vscode/launch.json
+.vscode/
