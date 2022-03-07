@@ -6,14 +6,19 @@ import { Navbar } from 'react-bootstrap';
 import Home from './pages/Home';
 import logo from './logo_upscaled_198_138.png';
 import githubIcon from './GitHub-Mark-64px.png';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import env from 'react-dotenv';
+import Login from './pages/Login';
 
 /**
  * Checks whether the necessary environment variables are set using
  * React dotenv.
  */
 function validateKeys(): boolean {
+  console.log(env);
+  if (!env) {
+    return false;
+  }
   const requiredKeys = [
     'PS_PUBLISH_KEY',
     'PS_SECRET_KEY',
@@ -37,7 +42,10 @@ function App() {
     validateKeys()
   );
 
-  console.log(keysPresent.current);
+  /**
+   * State for mock login
+   */
+  const [loginState, setLoginState] = useState<boolean>(false);
 
   return (
     <div>
@@ -64,9 +72,13 @@ function App() {
         </Navbar>
         <Row>
           {keysPresent.current === true ? (
-            <Container>
-              <Home />
-            </Container>
+            loginState === true ? (
+              <Container>
+                <Home />
+              </Container>
+            ) : (
+              <Login setLoginState={setLoginState} />
+            )
           ) : (
             <Col
               className="mx-auto"
