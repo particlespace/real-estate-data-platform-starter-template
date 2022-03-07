@@ -36,17 +36,15 @@ export default function Login({
           </Card.Header>
           <Card.Body>
             <Form onSubmit={login}>
-              <Form.Label
-              >
-                Username
+              <Form.Label>
+                Email
               </Form.Label>
               <Form.Control
-                type="username"
-                name="username"
+                type="email"
+                name="email"
                 className="mb-3"
               />
-              <Form.Label
-              >
+              <Form.Label>
                 Password
               </Form.Label>
               <Form.Control
@@ -54,6 +52,18 @@ export default function Login({
                 name="password"
                 className="mb-3"
               />
+              {signingUp && (
+                <>
+                  <Form.Label>
+                    Confirm Password
+                  </Form.Label>
+                  <Form.Control
+                    type="password"
+                    name="confirm password"
+                    className="mb-3"
+                  />
+                </>
+              )}
               <Form.Group
                 controlId="submit"
                 className="mb-1"
@@ -64,15 +74,12 @@ export default function Login({
               </Form.Group>
               <Form.Text
                 className="text-primary"
-                onClick={() => setSigningUp(true)}
+                onClick={() => setSigningUp(!signingUp)}
 
               >
-                <a
-                  href="https://dashboard.particlespace.com/auth/registration"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Sign Up
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a>
+                  {signingUp ? 'Log In' : 'Sign Up'}
                 </a>
               </Form.Text>
             </Form>
