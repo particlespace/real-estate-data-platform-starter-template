@@ -1,1 +1,0 @@
-# real-estate-data-platform-starter-template
