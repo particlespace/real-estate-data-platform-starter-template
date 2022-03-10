@@ -1,0 +1,2 @@
+# Don't include package-lock in diffs or language stats
+package-lock.json linguist-generated
