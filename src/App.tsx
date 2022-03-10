@@ -22,7 +22,6 @@ function validateKeys(): boolean {
   const requiredKeys = [
     'PS_PUBLISH_KEY',
     'PS_SECRET_KEY',
-    'PS_KEY_NAME',
     'GOOGLE_MAPS_KEY',
   ];
   const missingKeys = requiredKeys.filter(key => !env[key]);
