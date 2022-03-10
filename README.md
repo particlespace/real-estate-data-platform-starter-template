@@ -1,4 +1,4 @@
-# Reale Estate Data Platform Starter 🚀
+# Real Estate Data Platform Starter 🚀
 
 A simple starter template for a real estate data platform built on Particle Space
 
