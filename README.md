@@ -14,6 +14,7 @@ GOOGLE_MAPS_KEY=YOUR_KEY
 PS_PUBLISH_KEY=YOUR_KEY
 PS_SECRET_KEY=YOUR_SECRET
 ```
+3. Maps JS API is already enabled by default but Geocoding API and Places API must be manually enabled.
 
 ## Installation 
 To view the project run `npm install && npm start` in the root directory
